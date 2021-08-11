@@ -57,8 +57,14 @@ export default {
         thumbnailWidth: 150,
         headers: {
           "My-Awesome-Header": "header value",
+          nameVideo: "",
+          descriptionVideo: "",
         },
         autoProcessQueue: false,
+        addRemoveLinks: true,
+        dictRemoveFile: "Remover Arquivo",
+        dictCancelUpload: "Cancelar Upload",
+        dictCancelUploadConfirmation: "Deseja realmente cancelar o Upload?",
       },
       success: false,
       error: false,
@@ -75,18 +81,18 @@ export default {
     vfileAdded(file) {
       console.log("File:", file)
       this.file = file
-      this.fileAdded = false
+      this.fileAdded = true
       console.log("ref:", this.$refs.myVueDropzone)
       // window.toastr.info('', 'Event : vdropzone-file-added')
     },
     vdropzoneComplete(res) {
       console.log("RES: ", res)
-      this.$refs.myVueDropzone.dropzone.disable
+      this.$refs.myVueDropzone.dropzone.complet
     },
-    vdropzoneSending(file, xhr, formData) {
+    vdropzoneSending(file, formData) {
       console.log("File:", file)
       console.log("formData", formData)
-      console.log("Xhr:", xhr)
+      // console.log("Xhr:", xhr)
     },
     vdropzoneSuccess(file, response) {
       console.log("File:", file)
@@ -106,8 +112,14 @@ export default {
         }
       }, 3000)
     },
+
     sendFile() {
       if (this.$refs.form.validate()) {
+        this.$refs.myVueDropzone.options.headers.nameVideo = this.videoName
+        this.$refs.myVueDropzone.options.headers.descriptionVideo = this.videoDescription
+
+        console.log("REFS:", this.$refs.myVueDropzone)
+
         this.$refs.myVueDropzone.processQueue()
       }
     },
