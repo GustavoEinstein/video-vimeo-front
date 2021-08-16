@@ -1,15 +1,23 @@
 <template>
+  
   <v-app>
-    <div id="app" class="mx-auto">
-      <v-col cols="12" justify-center align-center>
-        <v-card class="mx-auto" width="1000px">
+    <div id="app">
+        <v-toolbar class="mx-auto"
+        dark
+        src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+      >
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-toolbar-title>Galaxy Video</v-toolbar-title>
+        <v-spacer></v-spacer>
+               <router-link to="/">
+                  <v-btn>
+                    <v-icon>mdi-arrow-left</v-icon>
+                  </v-btn>
+                </router-link>
+      </v-toolbar>
+        <v-card class="mt-16 mx-auto" width="1000px">
           <v-toolbar color="indigo" dark>
-            <v-toolbar-title class="mx-auto">Galaxy Video</v-toolbar-title>
-            <router-link to="/">
-              <v-btn color="blue">
-                <v-icon>mdi-arrow-left</v-icon>
-              </v-btn>
-            </router-link>
+            <v-toolbar-title class="mx-auto">Upload</v-toolbar-title>
           </v-toolbar>
           <vue-dropzone
             @vdropzone-file-added="vfileAdded"
@@ -23,23 +31,25 @@
             :options="dropzoneOptions"
           ></vue-dropzone>
         </v-card>
+        <v-card class="mt-9 mx-auto" width="1000px" justify-content-center>
         <v-form ref="form">
-          <v-text-field
+          <v-text-field class="mx-10"
             v-model="videoName"
             :rules="ruleRequired"
             label="Nome do Vídeo"
             required
           ></v-text-field>
-
-          <v-text-field
+          <v-text-field class="mx-10"
             v-model="videoDescription"
             :rules="ruleRequired"
             label="Descrição"
             required
           ></v-text-field>
         </v-form>
-        <v-btn color="primary" @click="sendFile"> Enviar </v-btn>
-      </v-col>
+        <div class="text-center">
+          <v-btn class="mx-auto" color="primary" @click="sendFile"> Enviar </v-btn>
+        </div>
+        </v-card>
     </div>
   </v-app>
 </template>
@@ -58,7 +68,7 @@ export default {
     return {
       file: null,
       dropzoneOptions: {
-        url: "http://localhost:2005/video-vimeo-upload",
+        url: "http://localhost:2006/video-vimeo-upload",
         thumbnailWidth: 150,
         headers: {
           "My-Awesome-Header": "header value",
@@ -114,7 +124,7 @@ export default {
       const resultProgress = setInterval(() => {
         console.log("Progress: ", totaluploadprogress + " - " + totalBytesSent)
         if (totaluploadprogress == 100) {
-          // alert("Arquivo enviado com sucesso!")
+          alert("Video enviado com sucesso!")
           clearInterval(resultProgress)
         }
       }, 3000)
@@ -138,10 +148,5 @@ export default {
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  align-items: center;
-  align-content: center;
-  margin-top: 60px;
-
-  padding: 0;
 }
 </style>
