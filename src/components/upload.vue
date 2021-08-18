@@ -6,7 +6,7 @@
         <v-toolbar-title>Galaxy Video</v-toolbar-title>
         <v-spacer></v-spacer>
         <router-link style="text-decoration: none; color: inherit;" to="/2">
-          <v-btn>
+          <v-btn color="black">
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
         </router-link>
@@ -45,7 +45,7 @@
           ></v-text-field>
         </v-form>
         <div class="text-center">
-          <v-btn class="mx-auto" color="primary" @click="sendFile">
+          <v-btn class="mx-auto mt-10" color="primary" @click="sendFile">
             Enviar
           </v-btn>
         </div>
@@ -104,8 +104,12 @@ export default {
     },
     vdropzoneComplete(res) {
       console.log("RES: ", res)
-      this.$refs.myVueDropzone.dropzone.complete
-      alert("Video enviado com sucesso!")
+      if (res.status == "success") {
+        this.$refs.myVueDropzone.dropzone.complete
+        alert("Video enviado com sucesso!")
+      } else {
+        this.$refs.myVueDropzone.dropzone.error
+      }
     },
     vdropzoneSending(file, formData) {
       console.log("File:", file)
@@ -133,6 +137,8 @@ export default {
         console.log("REFS:", this.$refs.myVueDropzone)
 
         this.$refs.myVueDropzone.processQueue()
+
+        console.log("Resposta")
       }
     },
   },

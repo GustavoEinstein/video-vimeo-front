@@ -5,7 +5,7 @@
       <v-toolbar-title>Galaxy Video</v-toolbar-title>
       <v-spacer></v-spacer>
       <router-link style="text-decoration: none; color: inherit;" to="/upload">
-        <v-btn>
+        <v-btn color="black">
           <v-icon> mdi-arrow-up-bold-box-outline </v-icon>
         </v-btn>
       </router-link>
@@ -16,33 +16,36 @@
     <v-row>
       <v-col v-for="(video, i) in videosData" :key="i" cols="4">
         <template>
-          <v-card class="mb-10 mt-10" width="600px">
-            <v-btn
-              class="pull-left"
-              small
-              color="blue lighten-3"
-              @click="editOver(video)"
-              ><v-icon>mdi-movie-open-edit-outline</v-icon></v-btn
-            >
-            <v-btn
-              color="red lighten-1 pull-right"
-              small
-              dark
-              @click="deletionOver(video)"
-            >
-              <v-icon>mdi-delete-outline</v-icon>
-            </v-btn>
-            <v-card-title
-              class="mx-auto justify-center"
-              v-if="video.name"
-              :key="'j' + i"
-              v-text="video.name"
-              justify-center
-            ></v-card-title>
+          <v-card class="mb-10 mt-10 ml-5" width="600px">
+            <v-toolbar class="mx-auto text-h6 text-center" dark>
+              <v-btn
+                small
+                outlined
+                color="green lighten-3"
+                @click="editOver(video)"
+                ><v-icon>mdi-movie-open-edit-outline</v-icon></v-btn
+              >
+              <v-toolbar-title
+                class="mx-auto text-center"
+                v-if="video.name"
+                :key="'j' + i"
+                v-text="video.name"
+              >
+              </v-toolbar-title>
+              <v-btn
+                color="red lighten-1"
+                outlined
+                small
+                dark
+                @click="deletionOver(video)"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </v-toolbar>
             <v-img
               :src="video.thumbnail"
               max-width="300"
-              class="mx-auto"
+              class="mt-10 mx-auto"
               @click="over(video)"
             ></v-img>
             <v-divider class="mt-5"> </v-divider>
@@ -103,8 +106,8 @@
       </div>
     </v-overlay>
     <v-overlay :value="confirmDeletion">
-      <v-card light>
-        <v-card-title class="text-h6 red lighten-2 text-center">
+      <v-card light class="mx-auto text-center">
+        <v-card-title class="mx-auto red lighten-2 text-center">
           Excluir video
         </v-card-title>
 
