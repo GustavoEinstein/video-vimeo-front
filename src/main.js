@@ -6,7 +6,9 @@ import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import router from "./router"
 import vueVimeoPlayer from 'vue-vimeo-player'
+import vGallery from 'v-gallery'
 
+Vue.use(vGallery)
 
 Vue.use(vueVimeoPlayer)
 

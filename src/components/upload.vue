@@ -1,45 +1,43 @@
 <template>
-  
   <v-app>
     <div id="app">
-        <v-toolbar class="mx-auto"
-        dark
-        src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
-      >
+      <v-toolbar class="mx-auto" dark color="indigo accent-3">
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>Galaxy Video</v-toolbar-title>
         <v-spacer></v-spacer>
-               <router-link to="/">
-                  <v-btn>
-                    <v-icon>mdi-arrow-left</v-icon>
-                  </v-btn>
-                </router-link>
+        <router-link style="text-decoration: none; color: inherit;" to="/2">
+          <v-btn>
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
+        </router-link>
       </v-toolbar>
-        <v-card class="mt-16 mx-auto" width="1000px">
-          <v-toolbar color="indigo" dark>
-            <v-toolbar-title class="mx-auto">Upload</v-toolbar-title>
-          </v-toolbar>
-          <vue-dropzone
-            @vdropzone-file-added="vfileAdded"
-            @vdropzone-complete="vdropzoneComplete"
-            @vdropzone-sending="vdropzoneSending"
-            @vdropzone-success="vdropzoneSuccess"
-            @vdropzone-error="vdropzoneError"
-            @vdropzone-total-upload-progress="vprogress"
-            ref="myVueDropzone"
-            id="dropzone"
-            :options="dropzoneOptions"
-          ></vue-dropzone>
-        </v-card>
-        <v-card class="mt-9 mx-auto" width="1000px" justify-content-center>
+      <v-card class="mt-16 mx-auto" width="1000px">
+        <v-toolbar color="indigo accent-2" dark>
+          <v-toolbar-title class="mx-auto">Upload</v-toolbar-title>
+        </v-toolbar>
+        <vue-dropzone
+          @vdropzone-file-added="vfileAdded"
+          @vdropzone-complete="vdropzoneComplete"
+          @vdropzone-sending="vdropzoneSending"
+          @vdropzone-success="vdropzoneSuccess"
+          @vdropzone-error="vdropzoneError"
+          @vdropzone-total-upload-progress="vprogress"
+          ref="myVueDropzone"
+          id="dropzone"
+          :options="dropzoneOptions"
+        ></vue-dropzone>
+      </v-card>
+      <v-card class="mt-9 mx-auto" width="1000px" justify-content-center>
         <v-form ref="form">
-          <v-text-field class="mx-10"
+          <v-text-field
+            class="mx-10"
             v-model="videoName"
             :rules="ruleRequired"
             label="Nome do Vídeo"
             required
           ></v-text-field>
-          <v-text-field class="mx-10"
+          <v-text-field
+            class="mx-10"
             v-model="videoDescription"
             :rules="ruleRequired"
             label="Descrição"
@@ -47,9 +45,11 @@
           ></v-text-field>
         </v-form>
         <div class="text-center">
-          <v-btn class="mx-auto" color="primary" @click="sendFile"> Enviar </v-btn>
+          <v-btn class="mx-auto" color="primary" @click="sendFile">
+            Enviar
+          </v-btn>
         </div>
-        </v-card>
+      </v-card>
     </div>
   </v-app>
 </template>
@@ -105,6 +105,7 @@ export default {
     vdropzoneComplete(res) {
       console.log("RES: ", res)
       this.$refs.myVueDropzone.dropzone.complete
+      alert("Video enviado com sucesso!")
     },
     vdropzoneSending(file, formData) {
       console.log("File:", file)
@@ -121,13 +122,7 @@ export default {
       console.log("Xhr:", xhr)
     },
     vprogress(totaluploadprogress, totalBytes, totalBytesSent) {
-      const resultProgress = setInterval(() => {
-        console.log("Progress: ", totaluploadprogress + " - " + totalBytesSent)
-        if (totaluploadprogress == 100) {
-          alert("Video enviado com sucesso!")
-          clearInterval(resultProgress)
-        }
-      }, 3000)
+      console.log("Progress: ", totaluploadprogress + " - " + totalBytesSent)
     },
 
     sendFile() {
