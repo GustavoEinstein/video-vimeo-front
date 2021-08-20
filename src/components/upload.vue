@@ -5,7 +5,8 @@
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>Galaxy Video</v-toolbar-title>
         <v-spacer></v-spacer>
-        <router-link style="text-decoration: none; color: inherit;" to="/2">
+
+        <router-link style="text-decoration: none; color: inherit;" to="/">
           <v-btn color="black">
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
@@ -43,13 +44,27 @@
             label="Descrição"
             required
           ></v-text-field>
+          <v-checkbox
+            v-model="checkbox"
+            :label="`Protegido por senha`"
+            class="ml-10"
+          ></v-checkbox>
+          <v-text-field
+            v-if="checkbox == true"
+            class="mx-10"
+            v-model="videoPassword"
+            :rules="getRulePassword"
+            label="Senha"
+            required
+          >
+          </v-text-field>
         </v-form>
-        <div class="text-center">
-          <v-btn class="mx-auto mt-10" color="primary" @click="sendFile">
-            Enviar
-          </v-btn>
-        </div>
       </v-card>
+      <div class="mt-10 text-center">
+        <v-btn class="mx-auto" color="primary" @click="sendFile">
+          Enviar
+        </v-btn>
+      </div>
     </div>
   </v-app>
 </template>
@@ -86,12 +101,14 @@ export default {
       success: false,
       error: false,
       sending: false,
+      checkbox: false,
 
       //eslint-disable-next-line
       ruleRequired: [(v) => !!v || "Campo obrigatório"],
 
       videoName: "",
       videoDescription: "",
+      videoPassword: null,
     }
   },
   methods: {
@@ -108,7 +125,7 @@ export default {
         this.$refs.myVueDropzone.dropzone.complete
         alert("Video enviado com sucesso!")
       } else {
-        this.$refs.myVueDropzone.dropzone.error
+        this.$refs.myVueDropzone.dropzone.ERROR
       }
     },
     vdropzoneSending(file, formData) {
@@ -134,11 +151,29 @@ export default {
         this.$refs.myVueDropzone.options.headers.nameVideo = this.videoName
         this.$refs.myVueDropzone.options.headers.descriptionVideo = this.videoDescription
 
-        console.log("REFS:", this.$refs.myVueDropzone)
+        console.log("REFS:", this.$refs.myVueDropzone.options.headers)
+
+        if (this.checkbox == true) {
+          this.$refs.myVueDropzone.options.headers.password = this.videoPassword
+          this.$refs.myVueDropzone.options.headers.privacy = "password"
+        }
 
         this.$refs.myVueDropzone.processQueue()
 
+        this.$refs.myVueDropzone.options.headers.password = null
+        this.$refs.myVueDropzone.options.headers.privacy = "public"
+
         console.log("Resposta")
+      }
+    },
+  },
+
+  computed: {
+    getRulePassword() {
+      if (this.checkbox == true) {
+        return [(v) => !!v || "Campo obrigatório"]
+      } else {
+        return []
       }
     },
   },

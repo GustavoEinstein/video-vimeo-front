@@ -2,15 +2,16 @@
   <div>
     <v-toolbar class="mx-auto" dark color="indigo accent-3">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-toolbar-title>Galaxy Video</v-toolbar-title>
+      <v-toolbar-title>Orama Development </v-toolbar-title>
       <v-spacer></v-spacer>
+
       <router-link style="text-decoration: none; color: inherit;" to="/upload">
         <v-btn color="black">
           <v-icon> mdi-arrow-up-bold-box-outline </v-icon>
         </v-btn>
       </router-link>
     </v-toolbar>
-    <v-toolbar color="indigo accent-2" dark>
+    <v-toolbar color="light">
       <v-toolbar-title class="mx-auto">Meus videos</v-toolbar-title>
     </v-toolbar>
     <v-row>
@@ -216,6 +217,8 @@ export default {
             if (res.statusText == "OK") {
               this.editForm = false
               this.getVideosData()
+            } else {
+              alert("Já existe um video com esse nome !")
             }
           })
           .catch((error) => {
