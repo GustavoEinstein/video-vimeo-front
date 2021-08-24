@@ -17,6 +17,18 @@
     <v-row>
       <v-col v-for="(video, i) in videosData" :key="i" cols="4">
         <template>
+          <v-btn
+            class="pull-left ml-6 mt-2"
+            min-width="0"
+            width="24"
+            text
+            @click="getQR()"
+            x-small
+          >
+            <v-icon @click="qrOver(video)">
+              mdi-qrcode-scan
+            </v-icon>
+          </v-btn>
           <v-card class="mb-10 mt-10 ml-5" width="600px">
             <v-toolbar class="mx-auto text-h6 text-center" dark>
               <v-btn
@@ -33,6 +45,7 @@
                 v-text="video.name"
               >
               </v-toolbar-title>
+
               <v-btn
                 color="red lighten-1"
                 outlined
@@ -43,13 +56,14 @@
                 <v-icon>mdi-delete-outline</v-icon>
               </v-btn>
             </v-toolbar>
-            <v-img
-              :src="video.thumbnail"
-              max-width="300"
-              class="mt-10 mx-auto"
-              @click="over(video)"
-            ></v-img>
-            <v-divider class="mt-5"> </v-divider>
+            <router-link :to="`/view/${video.vimeoId}`">
+              <v-img
+                :src="video.thumbnail"
+                width="100%"
+                class="mx-auto"
+              ></v-img>
+            </router-link>
+            <v-divider class="mt-3"> </v-divider>
             <v-card-subtitle
               class="mx-auto justify-center font-weight-medium"
               v-if="video.description"
@@ -59,7 +73,7 @@
             ></v-card-subtitle>
           </v-card>
         </template>
-        <v-overlay :value="overlay">
+        <!-- <v-overlay :value="overlay">
           <v-btn
             @click="overlay = false"
             color="red"
@@ -71,7 +85,7 @@
             </v-icon>
           </v-btn>
           <vimeo-player ref="player" :video-id="videolink" />
-        </v-overlay>
+        </v-overlay> -->
       </v-col>
     </v-row>
     <v-overlay :value="editForm">
@@ -129,6 +143,16 @@
         </v-card-actions>
       </v-card>
     </v-overlay>
+    <v-overlay :value="qrcode" :opacity="1">
+      <div class="mx-auto">
+        <v-icon @click="qrcode = false" class="pull-right">
+          mdi-close-thick
+        </v-icon>
+      </div>
+      <div v-html="code">
+        {{ code }}
+      </div>
+    </v-overlay>
   </div>
 </template>
 
@@ -143,10 +167,12 @@ export default {
       overlay: false,
       selected: false,
       editForm: false,
+      qrcode: false,
       confirmDeletion: false,
       dialog: false,
       newName: "",
       newDescription: "",
+      code: "",
 
       //eslint-disable-next-line
       ruleRequired: [(v) => !!v || "Campo obrigatório"],
@@ -197,6 +223,12 @@ export default {
 
       console.log(this.videouri)
     },
+    qrOver(video) {
+      this.videoid = video.vimeoId
+      this.qrcode = !this.qrcode
+
+      console.log(this.videoid)
+    },
     editVideo() {
       if (this.$refs.form.validate()) {
         console.log("NEWNAME", this.newName)
@@ -213,7 +245,7 @@ export default {
           }),
         })
           .then((res) => {
-            console.log("ResponseP:", res)
+            console.log("Response:", res)
             if (res.statusText == "OK") {
               this.editForm = false
               this.getVideosData()
@@ -241,6 +273,29 @@ export default {
           if (res.statusText == "OK") {
             this.confirmDeletion = false
             this.getVideosData()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    getQR() {
+      fetch("http://localhost:2006/video-vimeo-qr", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          video: this.videoid,
+        }),
+      })
+        .then((response) => {
+          return response.json()
+        })
+        .then((res) => {
+          console.log("Response:", res)
+          if (res.status == "success") {
+            this.code = res.data
           }
         })
         .catch((error) => {
