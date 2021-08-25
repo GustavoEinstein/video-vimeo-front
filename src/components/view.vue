@@ -14,7 +14,6 @@
       <v-toolbar color="light">
         <v-toolbar-title class="mx-auto">{{ videoName }}</v-toolbar-title>
       </v-toolbar>
-
       <v-card class="mx-auto mt-16" width="1000" margin="0">
         <vimeo-player
           class="mx-auto"
@@ -23,6 +22,12 @@
           :video-id="videoId"
           :options="options"
         />
+        <v-divider class="mt-3"></v-divider>
+        <v-card-subtitle class="text-center">
+          <p class="font-weight-black">
+            Descrição
+          </p>
+        </v-card-subtitle>
         <v-card-text>
           {{ videoDescription }}
         </v-card-text>

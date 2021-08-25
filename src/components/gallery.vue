@@ -12,137 +12,43 @@
       </router-link>
     </v-toolbar>
     <v-toolbar color="light">
-      <v-toolbar-title class="mx-auto">Meus videos</v-toolbar-title>
+      <v-toolbar-title class="mx-auto">Galaxy</v-toolbar-title>
     </v-toolbar>
     <v-row>
-      <v-col v-for="(video, i) in videosData" :key="i" cols="4">
+      <v-col v-for="(video, i) in videosData" :key="i" cols="4" class="mt-13">
         <template>
           <v-btn
-            class="pull-left ml-6 mt-2"
+            class="mx-auto mt-10 ml-4 "
             min-width="0"
             width="24"
             text
             @click="getQR()"
-            x-small
           >
-            <v-icon @click="qrOver(video)">
-              mdi-qrcode-scan
-            </v-icon>
+            <div>
+              <v-icon @click="qrOver(video)">
+                mdi-qrcode-scan
+              </v-icon>
+            </div>
           </v-btn>
-          <v-card class="mb-10 mt-10 ml-5" width="600px">
-            <v-toolbar class="mx-auto text-h6 text-center" dark>
-              <v-btn
-                small
-                outlined
-                color="green lighten-3"
-                @click="editOver(video)"
-                ><v-icon>mdi-movie-open-edit-outline</v-icon></v-btn
-              >
-              <v-toolbar-title
-                class="mx-auto text-center"
-                v-if="video.name"
-                :key="'j' + i"
-                v-text="video.name"
-              >
-              </v-toolbar-title>
-
-              <v-btn
-                color="red lighten-1"
-                outlined
-                small
-                dark
-                @click="deletionOver(video)"
-              >
-                <v-icon>mdi-delete-outline</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <router-link :to="`/view/${video.vimeoId}`">
-              <v-img
-                :src="video.thumbnail"
-                width="100%"
-                class="mx-auto"
+          <v-card class="mb-10  ml-5" width="500">
+            <router-link
+              style="text-decoration: none; color: inherit;"
+              :to="`/view/${video.vimeoId}`"
+            >
+              <v-img :src="video.thumbnail" width="100%" class="mx-auto">
+                <v-card-title>
+                  <p
+                    class="mx-auto text-center"
+                    v-if="video.name"
+                    :key="'j' + i"
+                    v-text="video.name"
+                  ></p></v-card-title
               ></v-img>
             </router-link>
-            <v-divider class="mt-3"> </v-divider>
-            <v-card-subtitle
-              class="mx-auto justify-center font-weight-medium"
-              v-if="video.description"
-              :key="'k' + i"
-              v-text="'Descrição: ' + video.description"
-              justify-center
-            ></v-card-subtitle>
           </v-card>
         </template>
-        <!-- <v-overlay :value="overlay">
-          <v-btn
-            @click="overlay = false"
-            color="red"
-            small
-            class="pull-right mr-9 mb-2"
-          >
-            <v-icon>
-              mdi-close-thick
-            </v-icon>
-          </v-btn>
-          <vimeo-player ref="player" :video-id="videolink" />
-        </v-overlay> -->
       </v-col>
     </v-row>
-    <v-overlay :value="editForm">
-      <v-icon @click="editForm = false" class="pull-right">
-        mdi-close-thick
-      </v-icon>
-      <v-card class="mt-9 mx-auto" width="1000px" justify-content-center light>
-        <v-toolbar color="teal accent-4" dark>
-          <v-toolbar-title class="mx-auto">Editar Video</v-toolbar-title>
-        </v-toolbar>
-        <v-img :src="videoimg" max-width="300" class="mx-auto mt-5"></v-img>
-        <v-form ref="form">
-          <v-text-field
-            class="mx-10"
-            v-model="newName"
-            :rules="ruleRequired"
-            label="Novo nome"
-            required
-          ></v-text-field>
-          <v-text-field
-            class="mx-10"
-            v-model="newDescription"
-            :rules="ruleRequired"
-            label="Nova Descrição"
-            required
-          ></v-text-field>
-        </v-form>
-      </v-card>
-      <div class="text-center">
-        <v-btn class="mx-auto mt-5" success @click="editVideo">
-          Editar
-        </v-btn>
-      </div>
-    </v-overlay>
-    <v-overlay :value="confirmDeletion">
-      <v-card light class="mx-auto text-center">
-        <v-card-title class="mx-auto red lighten-2 text-center">
-          Excluir video
-        </v-card-title>
-
-        <v-card-text class="mt-5">
-          Deseja realmente excluir o video?
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="success pull-left" text @click="deleteVideo">
-            Confirmar
-          </v-btn>
-          <v-btn @click="confirmDeletion = false" text color="error">
-            Cancelar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-overlay>
     <v-overlay :value="qrcode" :opacity="1">
       <div class="mx-auto">
         <v-icon @click="qrcode = false" class="pull-right">
