@@ -70,11 +70,11 @@ export default {
         })
         .then((res) => {
           if (res.status == "success") {
-            console.log("Res: ", res)
+            // console.log("Res: ", res)
             this.videoName = res.data[0].name
             this.videoDescription = res.data[0].description
             this.videoId = res.data[0].vimeoId
-            console.log(this.videoId)
+            // console.log(this.videoId)
             this.reque = true
           }
         })

@@ -20,9 +20,7 @@
           @vdropzone-file-added="vfileAdded"
           @vdropzone-complete="vdropzoneComplete"
           @vdropzone-sending="vdropzoneSending"
-          @vdropzone-success="vdropzoneSuccess"
           @vdropzone-error="vdropzoneError"
-          @vdropzone-total-upload-progress="vprogress"
           ref="myVueDropzone"
           id="dropzone"
           :options="dropzoneOptions"
@@ -113,37 +111,34 @@ export default {
   },
   methods: {
     vfileAdded(file) {
-      console.log("File:", file)
+      // console.log("File:", file)
       this.file = file
       this.fileAdded = true
-      console.log("ref:", this.$refs.myVueDropzone)
+      // console.log("ref:", this.$refs.myVueDropzone)
       // window.toastr.info('', 'Event : vdropzone-file-added')
     },
     vdropzoneComplete(res) {
-      console.log("RES: ", res)
+      // console.log("RES: ", res)
       if (res.status == "success") {
         this.$refs.myVueDropzone.dropzone.complete
-        alert("Video enviado com sucesso!")
       } else {
         this.$refs.myVueDropzone.dropzone.ERROR
       }
     },
-    vdropzoneSending(file, formData) {
-      console.log("File:", file)
-      console.log("formData", formData)
-      // console.log("Xhr:", xhr)
-    },
-    vdropzoneSuccess(file, response) {
-      console.log("File:", file)
-      console.log("Response:", response)
+    vdropzoneSending(file) {
+      console.log("File being sent:", file)
+      let video = {
+        videoName: this.$refs.myVueDropzone.options.headers.nameVideo,
+        videoStatus: "uploading",
+      }
+      this.$refs.myVueDropzone.options.headers.nameVideo = this.videoName
+      this.$store.dispatch("fetchuploadBoxContoller", true)
+      this.$store.dispatch("fetchnameVideo", video)
     },
     vdropzoneError(file, message, xhr) {
       console.log("File:", file)
       console.log("message", message)
       console.log("Xhr:", xhr)
-    },
-    vprogress(totaluploadprogress, totalBytes, totalBytesSent) {
-      console.log("Progress: ", totaluploadprogress + " - " + totalBytesSent)
     },
 
     sendFile() {
@@ -161,13 +156,15 @@ export default {
         this.$refs.myVueDropzone.processQueue()
 
         this.$refs.myVueDropzone.options.headers.password = null
-        this.$refs.myVueDropzone.options.headers.privacy = "public"
+        this.$refs.myVueDropzone.options.headers.privacy = "anybody"
 
         console.log("Resposta")
       }
     },
   },
-
+  mounted() {
+    // console.log("STORE:", this.$store)
+  },
   computed: {
     getRulePassword() {
       if (this.checkbox == true) {
@@ -184,5 +181,9 @@ export default {
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+.dz-progress {
+  /* progress bar covers file name */
+  display: none !important;
 }
 </style>

@@ -5,9 +5,9 @@
       <v-toolbar-title>Orama Development </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <router-link style="text-decoration: none; color: inherit;" to="/upload">
+      <router-link style="text-decoration: none; color: inherit;" to="/">
         <v-btn color="black">
-          <v-icon> mdi-arrow-up-bold-box-outline </v-icon>
+          <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </router-link>
     </v-toolbar>
@@ -101,9 +101,9 @@ export default {
         })
         .then((res) => {
           if (res.status == "success") {
-            console.log("Res: ", res)
+            // console.log("Res: ", res)
             this.videosData = res.data
-            console.log("videosData", this.videosData)
+            // console.log("videosData", this.videosData)
           }
         })
         .catch((error) => {

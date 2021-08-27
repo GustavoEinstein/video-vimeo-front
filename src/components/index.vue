@@ -28,7 +28,7 @@
 
             <v-card-actions right>
               <v-spacer />
-              <v-btn text :color="colorGalaxy" router :to="'/gallery'">
+              <v-btn text router :to="'/gallery'">
                 Selecionar
               </v-btn>
             </v-card-actions>
@@ -49,7 +49,7 @@
 
             <v-card-actions right>
               <v-spacer />
-              <v-btn text :color="colorGalaxy" router :to="'/userVideos'">
+              <v-btn text router :to="'/userVideos'">
                 Selecionar
               </v-btn>
             </v-card-actions>
@@ -70,7 +70,7 @@
 
             <v-card-actions right>
               <v-spacer />
-              <v-btn text :color="colorGalaxy" router :to="'/upload'">
+              <v-btn text router :to="'/upload'">
                 Selecionar
               </v-btn>
             </v-card-actions>
