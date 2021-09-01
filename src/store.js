@@ -22,7 +22,11 @@ const store = new Vuex.Store({
       fetchVideoStatus(state,status){
 
           state.uploadBoxState.video[status.index].videoStatus = status.videoStatus
+      },
+      clearVideo (state){
+          state.uploadBoxState.video = []
       }
+
 
     },
     actions: {
@@ -34,6 +38,9 @@ const store = new Vuex.Store({
         },
         fetchVideoStatus(context,status) {
             context.commit("fetchVideoStatus", status)
+        },
+        clearVideo (context) {
+            context.commit("clearVideo")
         }
     },
     getters: {

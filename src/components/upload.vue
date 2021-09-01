@@ -59,7 +59,7 @@
         </v-form>
       </v-card>
       <div class="mt-10 text-center">
-        <v-btn class="mx-auto" color="primary" @click="sendFile">
+        <v-btn class="mx-auto" color="primary" @click="sendFile" x-small>
           Enviar
         </v-btn>
       </div>
@@ -118,7 +118,7 @@ export default {
       // window.toastr.info('', 'Event : vdropzone-file-added')
     },
     vdropzoneComplete(res) {
-      // console.log("RES: ", res)
+      console.log("RES: ", res)
       if (res.status == "success") {
         this.$refs.myVueDropzone.dropzone.complete
       } else {
@@ -183,6 +183,10 @@ export default {
   -webkit-font-smoothing: antialiased;
 }
 .dz-progress {
+  /* progress bar covers file name */
+  display: none !important;
+}
+.dz-success-mark {
   /* progress bar covers file name */
   display: none !important;
 }

@@ -20,7 +20,8 @@
           <v-btn
             class="mx-auto mt-10 ml-4 "
             min-width="0"
-            width="24"
+            width="24px"
+            small
             text
             @click="getQR()"
           >

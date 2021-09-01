@@ -14,24 +14,38 @@
       <v-toolbar color="light">
         <v-toolbar-title class="mx-auto">{{ videoName }}</v-toolbar-title>
       </v-toolbar>
-      <v-card class="mx-auto mt-16" width="1000" margin="0">
-        <vimeo-player
-          class="mx-auto"
-          v-if="reque"
-          ref="player"
-          :video-id="videoId"
-          :options="options"
-        />
-        <v-divider class="mt-3"></v-divider>
-        <v-card-subtitle class="text-center">
-          <p class="font-weight-black">
-            Descrição
-          </p>
-        </v-card-subtitle>
-        <v-card-text>
-          {{ videoDescription }}
-        </v-card-text>
-      </v-card>
+      <v-row>
+        <v-card class="mx-auto mt-16 text-center" width="1000" margin="0">
+          <vimeo-player
+            class="mx-auto"
+            v-if="reque"
+            ref="player"
+            :video-id="videoId"
+            :options="options"
+          />
+          <v-card-title class="justify-center mt-3">
+            <p>
+              {{ videoName }}
+            </p>
+          </v-card-title>
+          <v-divider class="mt-2"></v-divider>
+          <v-card-subtitle>
+            <p class="font-weight-black">
+              Descrição
+            </p>
+          </v-card-subtitle>
+          <v-card-text>
+            {{ videoDescription }}
+          </v-card-text>
+        </v-card>
+        <v-col cols="6">
+          <v-card width="300">
+            <div v-html="code">
+              {{ code }}
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
   </v-app>
 </template>
@@ -52,6 +66,7 @@ export default {
       videoDescription: "",
       videoId: "",
       reque: false,
+      code: "",
     }
   },
   methods: {
@@ -82,10 +97,36 @@ export default {
           console.log(error)
         })
     },
+    getQR() {
+      fetch("http://localhost:2006/video-vimeo-qr", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          video: this.videoId,
+        }),
+      })
+        .then((response) => {
+          return response.json()
+        })
+        .then((res) => {
+          console.log("Response:", res)
+          if (res.status == "success") {
+            this.code = res.data
+            console.log(typeof this.code)
+            console.log("QRCODE:", this.code)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
   },
   mounted() {
     this.getVideosData()
     console.log(this.$route)
+    this.getQR()
   },
 }
 </script>

@@ -33,6 +33,9 @@
             <v-icon v-if="video.videoStatus == 'ready'" color="green" large>
               mdi-check-bold
             </v-icon>
+            <v-icon v-if="video.videoStatus == 'failed'" color="red" large>
+              mdi-close-bold
+            </v-icon>
           </div>
         </v-list-item>
         <v-divider> </v-divider>
@@ -46,14 +49,20 @@ export default {
   data() {
     return {
       ready: false,
+      verification: null,
     }
   },
   methods: {
     boxToogle() {
       this.$store.dispatch("fetchuploadBoxContoller", false)
+      this.$store.dispatch("clearVideo")
     },
     checkStatus() {
+      let videoLength = this.$store.getters.getvideoName.length
+      let ready = 0
+
       this.$store.getters.getvideoName.forEach((video, index) => {
+        console.log("video", video)
         if (video.videoStatus == "uploading") {
           fetch("http://localhost:2006/video-vimeo-status", {
             method: "POST",
@@ -74,33 +83,51 @@ export default {
                   index: index,
                   videoStatus: "ready",
                 }
+                ready = ready + 1
                 this.$store.dispatch("fetchVideoStatus", vid)
               } else if (res.message == "Upload do video Falhou!") {
                 let vid = {
                   index: index,
                   videoStatus: "failed",
                 }
+                ready = ready + 1
                 this.$store.dispatch("fetchVideoStatus", vid)
+              }
+              if (ready == videoLength) {
+                this.ready = true
               }
             })
             .catch((error) => {
               console.log(error)
             })
         }
+        if (index + 1 == videoLength) {
+          clearInterval(this.verification)
+          this.verificationOfStatus()
+        }
       })
     },
-    callCheckStatus() {
-      let verificationOfStatus = setInterval(() => {
-        if (this.ready == false) {
-          // console.log("Loop verification Transcode number: ", countLoop)
+
+    verificationOfStatus() {
+      this.verification = setInterval(() => {
+        if (this.ready == true) {
+          // clearInterval(verification)
+          console.log(this.verification)
+          this.ready = false
+        } else {
           this.checkStatus()
-        } else clearInterval(verificationOfStatus)
+        }
       }, 10000)
     },
   },
+
   mounted() {
-    this.callCheckStatus()
+    this.verificationOfStatus()
     console.log(this.$store.getters.getvideoName)
+  },
+
+  destroyed() {
+    clearInterval(this.verification)
   },
 }
 </script>
