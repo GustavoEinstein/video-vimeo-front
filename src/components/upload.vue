@@ -2,7 +2,6 @@
   <v-app>
     <div id="app">
       <v-toolbar class="mx-auto" dark color="indigo accent-3">
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>Galaxy Video</v-toolbar-title>
         <v-spacer></v-spacer>
 
@@ -58,10 +57,22 @@
           </v-text-field>
         </v-form>
       </v-card>
-      <div class="mt-10 text-center">
-        <v-btn class="mx-auto" color="primary" @click="sendFile" x-small>
+      <div class="mt-10 text-center" @click="sendFile">
+        <v-btn class="mx-auto" color="primary">
           Enviar
         </v-btn>
+
+        <v-overlay :value="processing">
+          <p>
+            Estamos processando o seu Video, voce será informado quando o upload
+            terminar.
+          </p>
+          <v-progress-circular
+            size="300"
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+        </v-overlay>
       </div>
     </div>
   </v-app>
@@ -100,6 +111,7 @@ export default {
       error: false,
       sending: false,
       checkbox: false,
+      processing: false,
 
       //eslint-disable-next-line
       ruleRequired: [(v) => !!v || "Campo obrigatório"],
@@ -118,24 +130,35 @@ export default {
       // window.toastr.info('', 'Event : vdropzone-file-added')
     },
     vdropzoneComplete(res) {
-      console.log("RES: ", res)
       if (res.status == "success") {
+        let video = {
+          videoName: this.$refs.myVueDropzone.options.headers.nameVideo,
+          videoStatus: "uploading",
+        }
         this.$refs.myVueDropzone.dropzone.complete
+        console.log("RES: ", res)
+        this.$store.dispatch("fetchuploadBoxContoller", true)
+        this.$store.dispatch("fetchnameVideo", video)
+
+        this.$router.push("gallery")
       } else {
         this.$refs.myVueDropzone.dropzone.ERROR
+        this.processing = false
       }
     },
+    // vdropzoneSuccess(file, response) {},
     vdropzoneSending(file) {
       console.log("File being sent:", file)
-      let video = {
-        videoName: this.$refs.myVueDropzone.options.headers.nameVideo,
-        videoStatus: "uploading",
-      }
+      // let video = {
+      //   videoName: this.$refs.myVueDropzone.options.headers.nameVideo,
+      //   videoStatus: "uploading",
+      // }
       this.$refs.myVueDropzone.options.headers.nameVideo = this.videoName
-      this.$store.dispatch("fetchuploadBoxContoller", true)
-      this.$store.dispatch("fetchnameVideo", video)
+      // this.$store.dispatch("fetchuploadBoxContoller", true)
+      // this.$store.dispatch("fetchnameVideo", video)
     },
     vdropzoneError(file, message, xhr) {
+      this.processing = false
       console.log("File:", file)
       console.log("message", message)
       console.log("Xhr:", xhr)
@@ -143,6 +166,7 @@ export default {
 
     sendFile() {
       if (this.$refs.form.validate()) {
+        this.processing = true
         this.$refs.myVueDropzone.options.headers.nameVideo = this.videoName
         this.$refs.myVueDropzone.options.headers.descriptionVideo = this.videoDescription
 

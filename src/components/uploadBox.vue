@@ -34,13 +34,42 @@
               mdi-check-bold
             </v-icon>
             <v-icon v-if="video.videoStatus == 'failed'" color="red" large>
-              mdi-close-bold
+              mdi-close
             </v-icon>
           </div>
         </v-list-item>
         <v-divider> </v-divider>
       </v-list-item-group>
     </v-card>
+    <v-snackbar v-model="snackbar" color="green accent-3" rounded="pill">
+      Seu video está pronto, você já pode vê-lo na galeria
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar
+      v-model="snackbar2"
+      rounded="pill"
+      :timeout="2000"
+      color="red darken-3"
+    >
+      Houve um erro no upload do seu Vídeo, tente novamente.
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="red"
+          text
+          v-bind="attrs"
+          :timeout="2000"
+          @click="snackbar2 = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -50,6 +79,8 @@ export default {
     return {
       ready: false,
       verification: null,
+      snackbar: false,
+      snackbar2: false,
     }
   },
   methods: {
@@ -62,7 +93,7 @@ export default {
       let ready = 0
 
       this.$store.getters.getvideoName.forEach((video, index) => {
-        console.log("video", video)
+        // console.log("video", video)
         if (video.videoStatus == "uploading") {
           fetch("http://localhost:2006/video-vimeo-status", {
             method: "POST",
@@ -83,6 +114,7 @@ export default {
                   index: index,
                   videoStatus: "ready",
                 }
+                this.snackbar = true
                 ready = ready + 1
                 this.$store.dispatch("fetchVideoStatus", vid)
               } else if (res.message == "Upload do video Falhou!") {
@@ -91,6 +123,7 @@ export default {
                   videoStatus: "failed",
                 }
                 ready = ready + 1
+                this.snackbar2 = true
                 this.$store.dispatch("fetchVideoStatus", vid)
               }
               if (ready == videoLength) {
@@ -137,6 +170,8 @@ export default {
   position: absolute;
   bottom: 0;
   right: 0;
+  margin-right: 1%;
+  margin-bottom: 1%;
 }
 #progress {
   right: 0;

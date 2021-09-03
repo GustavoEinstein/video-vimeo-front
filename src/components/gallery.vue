@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar class="mx-auto" dark color="indigo accent-3">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Orama Development </v-toolbar-title>
       <v-spacer></v-spacer>
 
@@ -14,39 +13,64 @@
     <v-toolbar color="light">
       <v-toolbar-title class="mx-auto">Galaxy</v-toolbar-title>
     </v-toolbar>
-    <v-row>
+    <v-row class="fill-height" align="center" justify="center">
       <v-col v-for="(video, i) in videosData" :key="i" cols="4" class="mt-13">
         <template>
-          <v-btn
-            class="mx-auto mt-10 ml-4 "
-            min-width="0"
-            width="24px"
-            small
-            text
-            @click="getQR()"
-          >
-            <div>
-              <v-icon @click="qrOver(video)">
-                mdi-qrcode-scan
-              </v-icon>
-            </div>
-          </v-btn>
-          <v-card class="mb-10  ml-5" width="500">
-            <router-link
-              style="text-decoration: none; color: inherit;"
-              :to="`/view/${video.vimeoId}`"
+          <v-hover v-slot="{ hover }">
+            <v-card
+              class="mb-10  ml-5"
+              width="500"
+              :class="{ 'on-hover': hover }"
+              :elevation="hover ? 12 : 2"
             >
-              <v-img :src="video.thumbnail" width="100%" class="mx-auto">
-                <v-card-title>
-                  <p
-                    class="mx-auto text-center"
-                    v-if="video.name"
-                    :key="'j' + i"
-                    v-text="video.name"
-                  ></p></v-card-title
-              ></v-img>
-            </router-link>
-          </v-card>
+              <v-toolbar>
+                <v-card-title id="title" class="mt-3">
+                  <p v-if="video.name" :key="'j' + i" v-text="video.name"></p
+                ></v-card-title>
+                <div id="qr">
+                  <v-btn
+                    min-width="0"
+                    width="24px"
+                    small
+                    text
+                    icon
+                    @click="getQR()"
+                  >
+                    <div>
+                      <v-icon @click="qrOver(video)">
+                        mdi-qrcode-scan
+                      </v-icon>
+                    </div>
+                  </v-btn>
+                </div>
+              </v-toolbar>
+              <v-img id="img" :src="video.thumbnail" width="100%">
+                <div id="play">
+                  <router-link
+                    style="text-decoration: none; color: inherit;"
+                    :to="`/view/${video.vimeoId}`"
+                    ><div id="player" class="align-self-center">
+                      <v-btn
+                        rounded
+                        x-large:class="{ 'show-btns': hover }"
+                        icon
+                        fab
+                      >
+                        <v-icon
+                          id="playIcon"
+                          size="80px"
+                          :class="{ 'show-btns': hover }"
+                          outlined
+                        >
+                          mdi-play-circle-outline
+                        </v-icon>
+                      </v-btn>
+                    </div>
+                  </router-link>
+                </div>
+              </v-img>
+            </v-card>
+          </v-hover>
         </template>
       </v-col>
     </v-row>
@@ -217,4 +241,34 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+#title {
+  align-content: center;
+}
+
+#play {
+  position: absolute;
+  width: 100px;
+  height: 30px;
+  top: 50%;
+  left: 55%;
+  margin: -13px 0px 0px -50px;
+}
+
+#qr {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.v-card {
+  transition: opacity 0.4s ease-in-out;
+}
+
+/* .v-card:not(.on-hover) {
+  opacity: 0.8;
+} */
+
+.show-btns {
+  color: rgb(240, 56, 56) !important;
+}
+</style>

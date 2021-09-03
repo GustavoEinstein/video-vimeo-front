@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar class="mx-auto" dark color="indigo accent-3">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Orama Development </v-toolbar-title>
       <v-spacer></v-spacer>
 
@@ -14,7 +13,7 @@
     <v-toolbar color="light">
       <v-toolbar-title class="mx-auto">Meus videos</v-toolbar-title>
     </v-toolbar>
-    <v-row>
+    <v-row class="fill-height" align="center" justify="center">
       <v-col v-for="(video, i) in videosData" :key="i" cols="4">
         <template>
           <v-card class="mb-10 mt-10 ml-5" width="500">

@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar class="mx-auto" dark color="indigo accent-3">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Orama Development </v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
