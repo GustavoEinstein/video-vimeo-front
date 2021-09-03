@@ -41,32 +41,35 @@
         <v-divider> </v-divider>
       </v-list-item-group>
     </v-card>
-    <v-snackbar v-model="snackbar" color="green accent-3" rounded="pill">
+    <v-snackbar v-model="snackbar" light rounded="pill">
       Seu video está pronto, você já pode vê-lo na galeria
 
       <template v-slot:action="{ attrs }">
-        <v-btn color="red" text v-bind="attrs" @click="snackbar = false">
-          Close
+        <v-btn
+          color="red"
+          rounded
+          fab
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          <v-icon> mdi-close </v-icon>
         </v-btn>
       </template>
     </v-snackbar>
-    <v-snackbar
-      v-model="snackbar2"
-      rounded="pill"
-      :timeout="2000"
-      color="red darken-3"
-    >
+    <v-snackbar v-model="snackbar2" rounded="pill" light>
       Houve um erro no upload do seu Vídeo, tente novamente.
 
       <template v-slot:action="{ attrs }">
         <v-btn
           color="red"
+          rounded
+          fab
           text
           v-bind="attrs"
-          :timeout="2000"
           @click="snackbar2 = false"
         >
-          Close
+          <v-icon> mdi-close </v-icon>
         </v-btn>
       </template>
     </v-snackbar>
