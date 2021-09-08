@@ -14,7 +14,7 @@
         </router-link>
       </v-toolbar>
       <v-toolbar color="light">
-        <v-toolbar-title class="mx-auto">{{ videoName }}</v-toolbar-title>
+        <v-toolbar-title class="mx-auto">View</v-toolbar-title>
       </v-toolbar>
       <v-row no-gutters>
         <v-col cols="12">

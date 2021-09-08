@@ -64,7 +64,7 @@
 
         <v-overlay :value="processing">
           <p>
-            Estamos processando o seu Video, voce será informado quando o upload
+            Estamos processando o seu Video, você será informado quando o upload
             terminar.
           </p>
           <v-progress-circular
@@ -140,7 +140,7 @@ export default {
         this.$store.dispatch("fetchuploadBoxContoller", true)
         this.$store.dispatch("fetchnameVideo", video)
 
-        this.$router.push("gallery")
+        this.$router.push("/")
       } else {
         this.$refs.myVueDropzone.dropzone.ERROR
         this.processing = false

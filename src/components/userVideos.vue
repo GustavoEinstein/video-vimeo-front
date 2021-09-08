@@ -143,6 +143,13 @@
         {{ code }}
       </div>
     </v-overlay>
+    <v-overlay :value="processing">
+      <v-progress-circular
+        size="300"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 
@@ -163,6 +170,7 @@ export default {
       newName: "",
       newDescription: "",
       code: "",
+      processing: false,
 
       //eslint-disable-next-line
       ruleRequired: [(v) => !!v || "Campo obrigatório"],
@@ -223,6 +231,7 @@ export default {
       if (this.$refs.form.validate()) {
         console.log("NEWNAME", this.newName)
         console.log("NEWDESCRIPTION", this.newDescription)
+        this.processing = true
         fetch("http://localhost:2006/video-vimeo-edit", {
           method: "POST",
           headers: {
@@ -238,6 +247,7 @@ export default {
             console.log("Response:", res)
             if (res.statusText == "OK") {
               this.editForm = false
+              this.processing = false
               this.getVideosData()
             } else {
               alert("Já existe um video com esse nome !")
@@ -249,6 +259,7 @@ export default {
       }
     },
     deleteVideo() {
+      this.processing = true
       fetch("http://localhost:2006/video-vimeo-delete", {
         method: "POST",
         headers: {
@@ -262,6 +273,7 @@ export default {
           console.log("ResponseP:", res)
           if (res.statusText == "OK") {
             this.confirmDeletion = false
+            this.processing = false
             this.getVideosData()
           }
         })
