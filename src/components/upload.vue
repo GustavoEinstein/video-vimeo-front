@@ -131,16 +131,8 @@ export default {
     },
     vdropzoneComplete(res) {
       if (res.status == "success") {
-        let video = {
-          videoName: this.$refs.myVueDropzone.options.headers.nameVideo,
-          videoStatus: "uploading",
-        }
         this.$refs.myVueDropzone.dropzone.complete
         console.log("RES: ", res)
-        this.$store.dispatch("fetchuploadBoxContoller", true)
-        this.$store.dispatch("fetchnameVideo", video)
-
-        this.$router.push("/")
       } else {
         this.$refs.myVueDropzone.dropzone.ERROR
         this.processing = false
@@ -149,11 +141,14 @@ export default {
     // vdropzoneSuccess(file, response) {},
     vdropzoneSending(file) {
       console.log("File being sent:", file)
-      // let video = {
-      //   videoName: this.$refs.myVueDropzone.options.headers.nameVideo,
-      //   videoStatus: "uploading",
-      // }
+      let video = {
+        videoName: this.$refs.myVueDropzone.options.headers.nameVideo,
+        videoStatus: "uploading",
+      }
       this.$refs.myVueDropzone.options.headers.nameVideo = this.videoName
+      this.$store.dispatch("fetchuploadBoxContoller", true)
+      this.$store.dispatch("fetchnameVideo", video)
+
       // this.$store.dispatch("fetchuploadBoxContoller", true)
       // this.$store.dispatch("fetchnameVideo", video)
     },
@@ -166,18 +161,12 @@ export default {
 
     sendFile() {
       if (this.$refs.form.validate()) {
-        this.processing = true
-        this.$refs.myVueDropzone.options.headers.nameVideo = this.videoName
-        this.$refs.myVueDropzone.options.headers.descriptionVideo = this.videoDescription
-
-        console.log("REFS:", this.$refs.myVueDropzone.options.headers)
+        console.log("File:", this.$refs.myVueDropzone.options.headers)
 
         if (this.checkbox == true) {
           this.$refs.myVueDropzone.options.headers.password = this.videoPassword
           this.$refs.myVueDropzone.options.headers.privacy = "password"
         }
-
-        this.$refs.myVueDropzone.processQueue()
 
         this.$refs.myVueDropzone.options.headers.password = null
         this.$refs.myVueDropzone.options.headers.privacy = "anybody"
