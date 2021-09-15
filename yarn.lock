@@ -8983,6 +8983,13 @@ vue-eslint-parser@^7.0.0:
     esquery "^1.4.0"
     lodash "^4.17.15"
 
+vue-file-selector@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/vue-file-selector/-/vue-file-selector-0.6.0.tgz#cdbb9cce23735bbe35aa1e139fd847ec95c52323"
+  integrity sha512-zh39/Hn11qI9vk538qOijveFMDH+1cJhOH7gZwFbtf3WKOxMwqXV70Iai68i/CY119+/evr/PvqKFTwj85n2XA==
+  dependencies:
+    vue "^2.6.10"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
@@ -9049,7 +9056,7 @@ vue2-dropzone@^3.6.0:
   dependencies:
     dropzone "^5.5.1"
 
-vue@^2.5.11, vue@^2.6.11:
+vue@^2.5.11, vue@^2.6.10, vue@^2.6.11:
   version "2.6.14"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==

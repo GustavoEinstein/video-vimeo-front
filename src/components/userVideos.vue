@@ -18,6 +18,13 @@
         <template>
           <v-card class="mb-10 mt-10 ml-5" width="500">
             <v-toolbar class="mx-auto text-h6 text-center" dark>
+              <v-btn
+                class="pull-left"
+                color="green lighten-1"
+                @click="editOver(video)"
+              >
+                <v-icon>mdi-movie-open-edit-outline</v-icon>
+              </v-btn>
               <v-toolbar-title
                 class="mx-auto text-center"
                 v-if="video.name"
@@ -25,6 +32,14 @@
                 v-text="video.name"
               >
               </v-toolbar-title>
+              <v-btn
+                class="pull-right"
+                color="red lighten-1"
+                dark
+                @click="deletionOver(video)"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
             </v-toolbar>
             <router-link :to="`/view/${video.vimeoId}`">
               <v-img
@@ -34,48 +49,10 @@
               ></v-img>
             </router-link>
             <v-card-text>
-              <v-chip-group>
-                <v-chip color="green lighten-3" @click="editOver(video)">
-                  <v-icon>mdi-movie-open-edit-outline</v-icon>
-                </v-chip>
-                <v-chip
-                  class="mx-auto"
-                  min-width="0"
-                  width="24"
-                  text
-                  @click="getQR()"
-                >
-                  <div class="align-center">
-                    <v-icon @click="qrOver(video)">
-                      mdi-qrcode-scan
-                    </v-icon>
-                  </div>
-                </v-chip>
-                <v-chip
-                  class="pull-right"
-                  color="red lighten-1"
-                  dark
-                  @click="deletionOver(video)"
-                >
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-chip>
-              </v-chip-group>
+              {{ video.description }}
             </v-card-text>
           </v-card>
         </template>
-        <!-- <v-overlay :value="overlay">
-          <v-btn
-            @click="overlay = false"
-            color="red"
-            small
-            class="pull-right mr-9 mb-2"
-          >
-            <v-icon>
-              mdi-close-thick
-            </v-icon>
-          </v-btn>
-          <vimeo-player ref="player" :video-id="videolink" />
-        </v-overlay> -->
       </v-col>
     </v-row>
     <v-overlay :value="editForm">
@@ -133,16 +110,6 @@
         </v-card-actions>
       </v-card>
     </v-overlay>
-    <v-overlay :value="qrcode" :opacity="1">
-      <div class="mx-auto">
-        <v-icon @click="qrcode = false" class="pull-right">
-          mdi-close-thick
-        </v-icon>
-      </div>
-      <div v-html="code">
-        {{ code }}
-      </div>
-    </v-overlay>
     <v-overlay :value="processing">
       <v-progress-circular
         size="300"
@@ -164,12 +131,10 @@ export default {
       overlay: false,
       selected: false,
       editForm: false,
-      qrcode: false,
       confirmDeletion: false,
       dialog: false,
       newName: "",
       newDescription: "",
-      code: "",
       processing: false,
 
       //eslint-disable-next-line
@@ -221,12 +186,6 @@ export default {
 
       console.log(this.videouri)
     },
-    qrOver(video) {
-      this.videoid = video.vimeoId
-      this.qrcode = !this.qrcode
-
-      // console.log(this.videoid)
-    },
     editVideo() {
       if (this.$refs.form.validate()) {
         console.log("NEWNAME", this.newName)
@@ -275,29 +234,6 @@ export default {
             this.confirmDeletion = false
             this.processing = false
             this.getVideosData()
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    getQR() {
-      fetch("http://localhost:2006/video-vimeo-qr", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          video: this.videoid,
-        }),
-      })
-        .then((response) => {
-          return response.json()
-        })
-        .then((res) => {
-          console.log("Response:", res)
-          if (res.status == "success") {
-            this.code = res.data
           }
         })
         .catch((error) => {

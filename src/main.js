@@ -8,6 +8,7 @@ import router from "./router"
 import vueVimeoPlayer from 'vue-vimeo-player'
 import vGallery from 'v-gallery'
 import store from "./store"
+import FileSelector from 'vue-file-selector';
 
 Vue.use(vGallery)
 
@@ -16,6 +17,8 @@ Vue.use(vueVimeoPlayer)
 Vue.use(Vuex)
 
 Vue.use(VueRouter)
+
+Vue.use(FileSelector);
 
 Vue.config.productionTip = false
 
